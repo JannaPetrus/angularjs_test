@@ -13,7 +13,9 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <script>
         $( document ).ready(function() {
-                $(".collapse").collapse()
+                $(".collapse").collapse({
+  
+        })
             });
     </script>
     <!--[if IE]>
@@ -45,7 +47,7 @@
                 </div>
                 <div class="col-md-4" ng-controller="AddNewTeam">
 
-                <form  role="form" class="row" name="addnewteam" ng-submit="addTeam()">
+                <form role="form" class="row" name="addnewteam" ng-submit="addTeam()">
                     <div class="col-md-10">
                       <input type="text" name="addTeam" id="addTeam" class="form-control" placeholder="Add new Team" ngMinlength="1" ng-model="newTeam" />
                     </div>
@@ -55,18 +57,21 @@
                 </form>
 
 
-                    <div class="accordion" id="accordion2" ng-repeat="teamName in arrayTeams track by $index">
-                      <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{'collapse'+$index+1}}">
-                           {{teamName.name}}
-                          </a>
+                <div class="panel-group" id="accordion" ng-repeat="teamName in arrayTeams track by $index">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#{{'collapse'+$index+1}}">
+                             {{teamName.name}}
+                            </a>
+                          </h4>
                         </div>
-                        <div id="{{'collapse'+$index+1}}" class="accordion-body collapse in">
-                          <div class="accordion-inner">
+                        <div id="{{'collapse'+$index+1}}" class="panel-collapse collapse in">
+                          <div class="panel-body">
                             сотрудники
                           </div>
                         </div>
+
                       </div>
                     </div>
 

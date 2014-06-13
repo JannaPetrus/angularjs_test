@@ -5,3 +5,6 @@ html {
 .container {
   margin-top: 30px;
 }
+#accordion.panel-group {
+  margin: 5px 0 0 0;
+}
