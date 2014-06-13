@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-framework="angularjs">
+    <head>
+    <meta charset="utf-8">
+    <meta name="description" content="A description about your site">
+    <meta name="keywords" content="keywords, separated, by, comma">
+    <title>AngularJS</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <link rel="stylesheet" href="style.css" media="screen">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script>
+        $( document ).ready(function() {
+                $(".collapse").collapse()
+            });
+    </script>
+    <!--[if IE]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+                </script>
+    <![endif]-->
+    </head>
+  
+    <body ng-app="teamsmvc">
+      
+        <div class="container">
+            <section id="main">
+            <div class="row">
+                <div class="tabbable col-md-8"> <!-- Only required for left/right tabs -->
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1" data-toggle="tab">Вкладка 1</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Вкладка 2</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                      <div>
+                          
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                      <p>Привет, я 2-я секция.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4" ng-controller="AddNewTeam">
+
+                <form  role="form" class="row" name="addnewteam" ng-submit="addTeam()">
+                    <div class="col-md-10">
+                      <input type="text" name="addTeam" id="addTeam" class="form-control" placeholder="Add new Team" ngMinlength="1" ng-model="newTeam" />
+                    </div>
+                    <div class="col-md-2">
+                      <button type="button" class="btn btn-success" ng-click="addTeam()">+</button>
+                    </div>
+                </form>
+
+
+                    <div class="accordion" id="accordion2" ng-repeat="teamName in arrayTeams track by $index">
+                      <div class="accordion-group">
+                        <div class="accordion-heading">
+                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{'collapse'+$index+1}}">
+                           {{teamName.name}}
+                          </a>
+                        </div>
+                        <div id="{{'collapse'+$index+1}}" class="accordion-body collapse in">
+                          <div class="accordion-inner">
+                            сотрудники
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                </div>
+            </div>
+            </section>
+        </div>
+      <script src="js/angular-route/angular-route.js"></script>
+      <script src="js/app.js"></script>
+      <script src="js/controllers/addTeamCtrl.js"></script>
+      <script src="js/services/todoStorage.js"></script>
+      <script src="js/directives/todoFocus.js"></script>
+      <script src="js/directives/todoEscape.js"></script>
+    </body>
+</html>
