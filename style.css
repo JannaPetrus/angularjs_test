@@ -8,3 +8,9 @@ html {
 #accordion.panel-group {
   margin: 5px 0 0 0;
 }
+#tableWorkers {
+  margin-top: 30px;
+}
+#addNewWorker {
+  margin-top: 30px;
+}

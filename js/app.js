@@ -10,7 +10,7 @@ angular.module('teamsmvc', ['ngRoute'])
 		'use strict';
 
 		$routeProvider.when('/', {
-			controller: 'AddNewTeam'
+			controller: 'Teams'
 		}).otherwise({
 			redirectTo: '/'
 		});
