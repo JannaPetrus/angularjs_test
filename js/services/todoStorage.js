@@ -7,15 +7,41 @@ angular.module('teamsmvc')
 	.factory('teamsStorage', function () {
 		'use strict';
 
-		var STORAGE_ID = 'teams-angularjs';
+		var TEAMS_STORAGE_ID = 'teams-angularjs';
+		var WORKERS_STORAGE_ID = 'workers-angularjs';
+
 
 		return {
-			get: function () {
-				return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+			get_team: function () {
+				return JSON.parse(localStorage.getItem(TEAMS_STORAGE_ID) || '[]');
 			},
 
-			put: function (teams) {
-				localStorage.setItem(STORAGE_ID, JSON.stringify(teams));
+			put_team: function (teams) {
+				localStorage.setItem(TEAMS_STORAGE_ID, JSON.stringify(teams));
+			},
+
+			get_worker: function () {
+				return JSON.parse(localStorage.getItem(WORKERS_STORAGE_ID) || '[]');
+			},
+
+			put_worker: function (workers) {
+				localStorage.setItem(WORKERS_STORAGE_ID, JSON.stringify(workers));
 			}
 		};
 	});
+
+	// .factory('workersStorage', function () {
+	// 	'use strict';
+
+	// 	var STORAGE_ID = 'workers-angularjs';
+
+	// 	return {
+	// 		get: function () {
+	// 			return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+	// 		},
+
+	// 		put: function (workers) {
+	// 			localStorage.setItem(STORAGE_ID, JSON.stringify(workers));
+	// 		}
+	// 	};
+	// });

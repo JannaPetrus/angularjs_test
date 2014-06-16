@@ -5,12 +5,46 @@ html {
 .container {
   margin-top: 30px;
 }
-#accordion.panel-group {
-  margin: 5px 0 0 0;
+.panel-group {
+  margin: 5px 0 0 0 !important;
 }
 #tableWorkers {
   margin-top: 30px;
 }
+.table-hover tbody tr {
+  z-index: 1;
+  position: relative;
+}
+.table-hover tbody tr:hover td {
+  cursor: pointer;
+}
+.table-hover tbody tr.collapseRow td {
+  height: 0;
+  padding: 0;
+}
+.table-hover tbody tr.collapseRow:hover td {
+  cursor: auto;
+  background-color: #fff;
+}
+.table-hover tbody tr.collapseRow:hover td button {
+  z-index: 2;
+  position: relative;
+}
+.table-hover tbody tr.collapseRow:hover th {
+  cursor: auto;
+  background-color: #fff;
+}
 #addNewWorker {
   margin-top: 30px;
+}
+.addWorkerTitle {
+  margin: 0 0 20px 20px;
+}
+.details_reviews {
+  margin-top: 20px;
+}
+#detailsWorker,
+#reviewWorker {
+  max-width: 312px;
+  max-height: 300px;
 }

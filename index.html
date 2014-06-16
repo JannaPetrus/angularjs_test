@@ -11,13 +11,7 @@
     <script src="js/bootstrap.js"></script>
     <link rel="stylesheet" href="style.css" media="screen">
     <link rel="stylesheet" href="css/bootstrap.css">
-    <script>
-        $( document ).ready(function() {
-                $(".collapse").collapse({
-  
-        })
-            });
-    </script>
+    
     <!--[if IE]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
                 </script>
@@ -43,46 +37,74 @@
                     <div class="tab-pane active" id="tab2">
 
                       <form id="addNewWorker" role="form" class="row" name="addnewworker" ng-submit="addworker()">
+                        
+                        <h4 class="addWorkerTitle">Add new worker:</h4>
+                        <div class="row col-md-11">
+                          <div class="col-md-3">
+                            <input type="text" name="nameWorker" id="nameWorker" class="form-control" placeholder="Name" ngMinlength="1" ng-model="newWorker.name" />
+                          </div>
 
-                        <div class="col-md-2">
-                          <input type="text" name="nameWorker" id="nameWorker" class="form-control" placeholder="Add name" ngMinlength="1" ng-model="newWorker.name" />
+                          <div class="col-md-3">
+                            <input type="text" name="jobTitleWorker" id="jobTitleWorker" class="form-control" placeholder="Job title" ngMinlength="1" ng-model="newWorker.jobTitle" />
+                          </div>
+
+                          <div class="col-md-3">
+                            <input type="text" name="ageWorker" id="ageWorker" class="form-control" placeholder="Age" ngMinlength="1" ng-model="newWorker.age" />
+                          </div>
+
+                          <div class="col-md-3">
+                            <input type="text" name="gradeWorker" id="gradeWorker" class="form-control" placeholder="Grade" ngMinlength="1" ng-model="newWorker.grade" />
+                          </div>
                         </div>
 
-                        <div class="col-md-2">
-                          <input type="text" name="jobTitleWorker" id="jobTitleWorker" class="form-control" placeholder="Add new worker" ngMinlength="1" ng-model="newWorker.jobTitle" />
+                        <div class="col-md-1">
+                          <button type="button" class="btn btn-success" ng-click="addWorker()">Add</button>
                         </div>
-
-                        <div class="col-md-2">
-                          <input type="text" name="ageWorker" id="ageWorker" class="form-control" placeholder="Add new worker" ngMinlength="1" ng-model="newWorker.age" />
-                        </div>
-
-                        <div class="col-md-2">
-                          <input type="text" name="gradeWorker" id="gradeWorker" class="form-control" placeholder="Add new worker" ngMinlength="1" ng-model="newWorker.grade" />
-                        </div>
-
-                        <div class="col-md-4">
-                          <button type="button" class="btn btn-success pull-right" ng-click="addWorker()">+</button>
+                        <div class="row col-md-11 details_reviews">
+                          <div class="col-md-6">
+                            <textarea type="text" name="detailsWorker" id="detailsWorker" class="form-control" placeholder="Details" ngMinlength="1" ng-model="newWorker.details"></textarea>
+                          </div>
+                          <div class="col-md-6">
+                            <textarea type="text" name="gradeWorker" id="reviewWorker" class="form-control" placeholder="Reviews" ngMinlength="1" ng-model="newWorker.reviews"></textarea>
+                          </div>
                         </div>
 
                       </form>
 
-                      <table id="tableWorkers" class="table table-bordered">
-                        <tr>
-                          <th>Name</th>
-                          <th>Job title</th>
-                          <th>Age</th>
-                          <th>Grade</th>
-                        </tr>
-                        <div ng-repeat="worker in arrayWorkers track by $index">
-                          <tr>
-                            <td>{{worker.name}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
+
+                        <div class="panel-group" id="worker_accordion">    
+                          <table id="tableWorkers" class="table table-bordered table-hover">
+                            <tr class="collapseRow">
+                              <th>Name</th>
+                              <th>Job title</th>
+                              <th>Age</th>
+                              <th>Grade</th>
+                              <th>Delete</th>
+                            </tr>
+                            <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" data-parent="#accordion" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
+                                  <td>
+                                   <a class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip">{{worker.name}}</a>
+                                  </td>
+                                  <td>{{worker.jobTitle}}</td>
+                                  <td>{{worker.age}}</td>
+                                  <td>{{worker.grade}}</td> 
+                                  <td>
+                                     <button type="button" class="close" aria-hidden="true" ng-click="removeWorker(worker)">&times;</button>
+                                  </td>
+                            </tr> 
+                            <tr ng-repeat-end class="collapseRow">
+                                <td colspan="5">
+                                      <div id="{{'worker_collapse'+$index+1}}" class="panel-collapse worker_collapse">
+                                        <div class="panel-body">
+                                          {{worker.reviews}}
+                                        </div>
+                                      </div>
+                                </td>
+                            </tr>
+                          </table>
                         </div>
 
-                      </table>
+
                     </div>
                   </div>
                 </div>
@@ -97,17 +119,18 @@
                     </div>
                 </form>
 
-                    <div class="panel-group" id="accordion" ng-repeat="teamName in arrayTeams track by $index">
+                    <div class="panel-group" id="team_accordion" ng-repeat="teamName in arrayTeams track by $index">
                       <div class="panel panel-default">
                         <div class="panel-heading">
                           <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#{{'collapse'+$index+1}}">
+                            <a data-toggle="collapse" data-parent="#team_accordion" href="#{{'team_collapse'+$index+1}}">
                               {{teamName.name}}
+                                      {{$index+1}}
                             </a>
                             <button type="button" class="close pull-right" aria-hidden="true" ng-click="removeTeam(teamName)">&times;</button>
                           </h4>
                         </div>
-                        <div id="{{'collapse'+$index+1}}" class="panel-collapse collapse in">
+                        <div id="{{'team_collapse'+$index+1}}" class="panel-collapse team_collapse">
                           <div class="panel-body">
                             сотрудники
                           </div>
@@ -124,7 +147,6 @@
       <script src="js/app.js"></script>
       <script src="js/controllers/addTeamCtrl.js"></script>
       <script src="js/services/todoStorage.js"></script>
-      <script src="js/directives/todoFocus.js"></script>
-      <script src="js/directives/todoEscape.js"></script>
+      <script src="js/directives/toolpit.js"></script>
     </body>
 </html>
