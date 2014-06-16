@@ -6,10 +6,10 @@
  */
 
 angular.module('teamsmvc')
-	.directive('tooltip', function () {
+	.directive('addworkertoteam', function () {
 		'use strict';
 
 		return function () {
-            $("a.showDetails").tooltip();
+			
 		}
 	});

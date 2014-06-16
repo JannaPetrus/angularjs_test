@@ -15,6 +15,10 @@ html {
   z-index: 1;
   position: relative;
 }
+.table-hover tbody tr td a {
+  z-index: 3;
+  position: relative;
+}
 .table-hover tbody tr:hover td {
   cursor: pointer;
 }

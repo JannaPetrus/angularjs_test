@@ -4,7 +4,10 @@ angular.module('teamsmvc')
 		'use strict';
 
 	var arrayTeams = $scope.arrayTeams = teamsStorage.get_team();
-	$scope.newTeam = '';
+	$scope.newTeam = {
+		name: '',
+		workers: []
+	};
 	var arrayWorkers = $scope.arrayWorkers = teamsStorage.get_worker();
 	$scope.newWorker = {
 		name: '',
@@ -18,23 +21,20 @@ angular.module('teamsmvc')
   // localStorage.clear();
 
   	$scope.addTeam = function(){
-		var newTeam = $scope.newTeam;
-		arrayTeams[arrayTeams.length] = {name: newTeam};	
+		arrayTeams[arrayTeams.length] = {name: $scope.newTeam};	
 		teamsStorage.put_team(arrayTeams);
-	    newTeam = '';
+	    $scope.newTeam = '';
     }
-  	$scope.removeTeam = function(teamName){
-	    arrayTeams.splice(arrayTeams.indexOf(teamName), 1);
+  	$scope.removeTeam = function(index){
+	    arrayTeams.splice(index, 1);
 	    teamsStorage.put_team(arrayTeams);
     }
 
 
   	$scope.addWorker = function(){
-  		var newWorker = $scope.newWorker;
-		arrayWorkers[arrayWorkers.length] = newWorker;	
+		arrayWorkers[arrayWorkers.length] = $scope.newWorker;	
 		teamsStorage.put_worker(arrayWorkers);
-	    console.log(newWorker.name);
-	    newWorker = {
+	    $scope.newWorker = {
 			name: '',
 			jobTitle: '',
 			age: '',
@@ -43,9 +43,14 @@ angular.module('teamsmvc')
 			reviews: ''
 		};
     }
-  	$scope.removeWorker = function(workerName){
-	    arrayWorkers.splice(arrayTeams.indexOf(workerName), 1);
+  	$scope.removeWorker = function(index){
+	    arrayWorkers.splice(index, 1);
 	    teamsStorage.put_worker(arrayWorkers);
     }
+
+    // $scope.addWorkerToTeam = function(index){
+		
+		
+    // }
 
 });

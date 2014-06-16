@@ -71,8 +71,7 @@
 
                       </form>
 
-
-                        <div class="panel-group" id="worker_accordion">    
+   
                           <table id="tableWorkers" class="table table-bordered table-hover">
                             <tr class="collapseRow">
                               <th>Name</th>
@@ -81,20 +80,20 @@
                               <th>Grade</th>
                               <th>Delete</th>
                             </tr>
-                            <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" data-parent="#accordion" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
+                            <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
                                   <td>
-                                   <a class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip">{{worker.name}}</a>
+                                   <a class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip" addworkertoteam ng-click="addWorkerToTeam($index)">{{worker.name}}</a>
                                   </td>
                                   <td>{{worker.jobTitle}}</td>
                                   <td>{{worker.age}}</td>
                                   <td>{{worker.grade}}</td> 
                                   <td>
-                                     <button type="button" class="close" aria-hidden="true" ng-click="removeWorker(worker)">&times;</button>
+                                     <button type="button" class="close" aria-hidden="true" ng-click="removeWorker($index)">&times;</button>
                                   </td>
                             </tr> 
                             <tr ng-repeat-end class="collapseRow">
                                 <td colspan="5">
-                                      <div id="{{'worker_collapse'+$index+1}}" class="panel-collapse worker_collapse">
+                                      <div id="{{'worker_collapse'+$index+1}}" class="panel-collapse collapse">
                                         <div class="panel-body">
                                           {{worker.reviews}}
                                         </div>
@@ -102,7 +101,6 @@
                                 </td>
                             </tr>
                           </table>
-                        </div>
 
 
                     </div>
@@ -119,18 +117,17 @@
                     </div>
                 </form>
 
-                    <div class="panel-group" id="team_accordion" ng-repeat="teamName in arrayTeams track by $index">
-                      <div class="panel panel-default">
+                    <div class="panel-group" id="team_accordion">
+                      <div class="panel panel-default" ng-repeat="teamName in arrayTeams track by $index">
                         <div class="panel-heading">
                           <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#team_accordion" href="#{{'team_collapse'+$index+1}}">
                               {{teamName.name}}
-                                      {{$index+1}}
                             </a>
-                            <button type="button" class="close pull-right" aria-hidden="true" ng-click="removeTeam(teamName)">&times;</button>
+                            <button type="button" class="close pull-right" aria-hidden="true" ng-click="removeTeam($index)">&times;</button>
                           </h4>
                         </div>
-                        <div id="{{'team_collapse'+$index+1}}" class="panel-collapse team_collapse">
+                        <div id="{{'team_collapse'+$index+1}}" class="panel-collapse collapse">
                           <div class="panel-body">
                             сотрудники
                           </div>
