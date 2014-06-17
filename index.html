@@ -20,13 +20,13 @@
   
     <body ng-app="teamsmvc">
       
-        <div class="container" ng-controller="Teams">
+        <div class="container">
             <section id="main">
             <div class="row">
-                <div class="tabbable col-md-8">
+                <div class="tabbable col-md-8" ng-controller="AddWorkers as storeWorker">
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab">Вкладка 1</a></li>
-                    <li><a href="#tab2" data-toggle="tab">Вкладка 2</a></li>
+                    <li><a ng-href="/{{'#tab1'}}" data-toggle="tab">Вкладка 1</a></li>
+                    <li class="active"><a ng-href="/{{'#tab2'}}" data-toggle="tab">Вкладка 2</a></li>
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane" id="tab1">
@@ -80,11 +80,11 @@
                               <th>Grade</th>
                               <th>Delete</th>
                             </tr>
-                            <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
+                            <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" index="$index" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
                                   <td>
-                                   <a class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip" addworkertoteam ng-click="addWorkerToTeam($index)">{{worker.name}}</a>
+                                   <a ng-href="addWorkerToTeam()" class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip" addworkertoteam="{{$index}}" ng-click="addWorkerToTeam()">{{worker.name}}</a>
                                   </td>
-                                  <td>{{worker.jobTitle}}</td>
+                                  <td>[{{$index}}]{{worker.jobTitle}}</td>
                                   <td>{{worker.age}}</td>
                                   <td>{{worker.grade}}</td> 
                                   <td>
@@ -106,7 +106,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4" ng-controller="AddTeams as storeTeams">
 
                 <form id="addNewTeam" role="form" class="row" name="addnewteam" ng-submit="addTeam()">
                     <div class="col-md-10">

@@ -5,12 +5,23 @@
  *
  * @type {angular.Module}
  */
-angular.module('teamsmvc', ['ngRoute'])
-	.config(function ($routeProvider) {
+var mainModule = angular.module('teamsmvc', ['ngRoute']);
+
+mainModule.config(function ($routeProvider) {
 		'use strict';
 
 		$routeProvider.when('/', {
 			controller: 'Teams'
+		}).otherwise({
+			redirectTo: '/'
+		});
+	});
+
+mainModule.config(function ($routeProvider) {
+		'use strict';
+
+		$routeProvider.when('/', {
+			controller: 'Workers'
 		}).otherwise({
 			redirectTo: '/'
 		});

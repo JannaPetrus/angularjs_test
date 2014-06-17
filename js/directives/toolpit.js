@@ -4,12 +4,28 @@
  * Directive that executes an expression when the element it is applied to gets
  * an `escape` keydown event.
  */
-
-angular.module('teamsmvc')
-	.directive('addworkertoteam', function () {
+var main_module = angular.module('teamsmvc');
+main_module.directive('tooltip', function () {
 		'use strict';
 
 		return function () {
-			
+			$("a.showDetails").tooltip();
+		}
+	});
+
+
+main_module.directive('addworkertoteam',  function () {
+		'use strict';
+                     
+		return{
+			scope: {},
+
+			link: function ($scope, element, attrs) {
+				//	$(".panel").first().children(".panel-collapse").addClass(".in");
+				//	var look = $(".panel-group").find('.in'); 
+					var indexWorker = attrs["addworkertoteam"];
+
+	            	console.log(look);
+				}
 		}
 	});
