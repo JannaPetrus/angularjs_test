@@ -6,31 +6,39 @@ var arrayTeams = [];
 var arrayWorkers = [];		
 
 
-	mainModule.controller('AddTeams', function Teams($scope, $routeParams, $filter, teamsStorage) {
+	mainModule.controller('AddTeams', function Teams($scope, $routeParams, $filter, teamsStorage, $rootScope) {
 		'use strict';
 
 		arrayTeams = $scope.arrayTeams = teamsStorage.get_team();
 			$scope.newTeam = {
 				name: '',
-				workers: []
-		};
+				workersIds: []
+			};
 
-	  // localStorage.clear();
+	  //localStorage.clear();
 
 	  	$scope.addTeam = function(){
-			arrayTeams[arrayTeams.length] = {name: $scope.newTeam};	
+			arrayTeams[arrayTeams.length] = $scope.newTeam;	
 			teamsStorage.put_team(arrayTeams);
-		    $scope.newTeam = '';
+		    $scope.newTeam = {
+				name: '',
+				workersIds: []
+			};
 	    }
 	  	$scope.removeTeam = function(index){
 		    arrayTeams.splice(index, 1);
 		    teamsStorage.put_team(arrayTeams);
 	    }
 
+	    $scope.setActiveTeam= function(index){
+	    	$rootScope.activeTeam = index;
+	    	console.log($rootScope.activeTeam);
+	    };
+
 	});
 
 
-	mainModule.controller('AddWorkers', function Workers($scope, $routeParams, $filter, teamsStorage) {
+	mainModule.controller('AddWorkers', function Workers($scope, $routeParams, $filter, teamsStorage, $rootScope) {
 			'use strict';
 		arrayWorkers = $scope.arrayWorkers = teamsStorage.get_worker();
 			$scope.newWorker = {
@@ -57,6 +65,12 @@ var arrayWorkers = [];
 		    arrayWorkers.splice(index, 1);
 		    teamsStorage.put_worker(arrayWorkers);
 	    }
+
+	    $scope.addWorkerToTeam = function(index){
+	    	console.log(index);
+	    	console.log(arrayTeams);
+	     	arrayTeams[$rootScope.activeTeam].workersIds.push(index);
+	    };
 	});
 
 })();

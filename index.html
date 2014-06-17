@@ -82,9 +82,9 @@
                             </tr>
                             <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" index="$index" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
                                   <td>
-                                   <a ng-href="addWorkerToTeam()" class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip" addworkertoteam="{{$index}}" ng-click="addWorkerToTeam()">{{worker.name}}</a>
+                                   <a ng-click="addWorkerToTeam($index)" class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip">{{worker.name}}</a>
                                   </td>
-                                  <td>[{{$index}}]{{worker.jobTitle}}</td>
+                                  <td>{{worker.jobTitle}}</td>
                                   <td>{{worker.age}}</td>
                                   <td>{{worker.grade}}</td> 
                                   <td>
@@ -110,7 +110,7 @@
 
                 <form id="addNewTeam" role="form" class="row" name="addnewteam" ng-submit="addTeam()">
                     <div class="col-md-10">
-                      <input type="text" name="addTeam" id="addTeam" class="form-control" placeholder="Add new Team" ngMinlength="1" ng-model="newTeam" />
+                      <input type="text" name="addTeam" id="addTeam" class="form-control" placeholder="Add new Team" ngMinlength="1" ng-model="newTeam.name" />
                     </div>
                     <div class="col-md-2">
                       <button type="button" class="btn btn-success" ng-click="addTeam()">+</button>
@@ -120,7 +120,7 @@
                     <div class="panel-group" id="team_accordion">
                       <div class="panel panel-default" ng-repeat="teamName in arrayTeams track by $index">
                         <div class="panel-heading">
-                          <h4 class="panel-title">
+                          <h4 class="panel-title" ng-click="setActiveTeam($index)">
                             <a data-toggle="collapse" data-parent="#team_accordion" href="#{{'team_collapse'+$index+1}}">
                               {{teamName.name}}
                             </a>
@@ -129,7 +129,9 @@
                         </div>
                         <div id="{{'team_collapse'+$index+1}}" class="panel-collapse collapse">
                           <div class="panel-body">
-                            сотрудники
+                            <div ng-repeat="workerId in arrayTeams[$index].workersIds track by $index">
+                              {{arrayWorkers}} 
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -147,3 +149,6 @@
       <script src="js/directives/toolpit.js"></script>
     </body>
 </html>
+<!-- 
+          $(".panel").first().children(".panel-collapse").addClass(".in");
+          var look = $(".panel-group").find('.in');  -->

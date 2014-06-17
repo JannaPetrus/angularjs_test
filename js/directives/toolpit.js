@@ -14,18 +14,16 @@ main_module.directive('tooltip', function () {
 	});
 
 
-main_module.directive('addworkertoteam',  function () {
-		'use strict';
+// main_module.directive('addworkertoteam',  function () {
+// 		'use strict';
                      
-		return{
-			scope: {},
+// 		return{
+// 			scope: {},
 
-			link: function ($scope, element, attrs) {
-				//	$(".panel").first().children(".panel-collapse").addClass(".in");
-				//	var look = $(".panel-group").find('.in'); 
-					var indexWorker = attrs["addworkertoteam"];
+// 			link: function ($scope, element, attrs) {
+// 					var indexWorker = attrs["addworkertoteam"];
 
-	            	console.log(look);
-				}
-		}
-	});
+// 	            	console.log(indexWorker);
+// 				}
+// 		}
+// 	});

@@ -7,22 +7,18 @@
  */
 var mainModule = angular.module('teamsmvc', ['ngRoute']);
 
-mainModule.config(function ($routeProvider) {
-		'use strict';
+// mainModule.config(function ($routeProvider) {
+// 		'use strict';
 
-		$routeProvider.when('/', {
-			controller: 'Teams'
-		}).otherwise({
-			redirectTo: '/'
-		});
-	});
+// 		$routeProvider.when('/', {
+// 			controller: 'Teams'
+// 		});
+// 	});
 
-mainModule.config(function ($routeProvider) {
-		'use strict';
+// mainModule.config(function ($routeProvider) {
+// 		'use strict';
 
-		$routeProvider.when('/', {
-			controller: 'Workers'
-		}).otherwise({
-			redirectTo: '/'
-		});
-	});
+// 		$routeProvider.when('/', {
+// 			controller: 'Workers'
+// 		});
+// 	});
