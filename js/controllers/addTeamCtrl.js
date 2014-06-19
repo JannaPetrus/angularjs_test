@@ -69,7 +69,7 @@ var arrayWorkers = [];
 	    $scope.setActiveTeam= function(index){
 	    	$rootScope.activeTeam = index;//setActiveTeam
 	    	$rootScope.workersInTag = arrayTeams.workersInTeam;
-	    	
+
 	    	console.log($rootScope.workersInTag);
 	    };
 
