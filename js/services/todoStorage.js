@@ -19,7 +19,6 @@ angular.module('teamsmvc')
 			put_team: function (teams) {
 				localStorage.setItem(TEAMS_STORAGE_ID, JSON.stringify(teams));
 			},
-
 			get_worker: function () {
 				return JSON.parse(localStorage.getItem(WORKERS_STORAGE_ID) || '[]');
 			},
@@ -30,18 +29,3 @@ angular.module('teamsmvc')
 		};
 	});
 
-	// .factory('workersStorage', function () {
-	// 	'use strict';
-
-	// 	var STORAGE_ID = 'workers-angularjs';
-
-	// 	return {
-	// 		get: function () {
-	// 			return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
-	// 		},
-
-	// 		put: function (workers) {
-	// 			localStorage.setItem(STORAGE_ID, JSON.stringify(workers));
-	// 		}
-	// 	};
-	// });

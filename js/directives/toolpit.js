@@ -10,20 +10,7 @@ main_module.directive('tooltip', function () {
 
 		return function () {
 			$("a.showDetails").tooltip();
+
 		}
 	});
 
-
-// main_module.directive('addworkertoteam',  function () {
-// 		'use strict';
-                     
-// 		return{
-// 			scope: {},
-
-// 			link: function ($scope, element, attrs) {
-// 					var indexWorker = attrs["addworkertoteam"];
-
-// 	            	console.log(indexWorker);
-// 				}
-// 		}
-// 	});
