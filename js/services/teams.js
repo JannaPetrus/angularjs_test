@@ -10,32 +10,33 @@
 	 
 	var workersData = [];
 		function getWorkers() {
-		    $http({method: 'GET', url: 'data.json'})
-		        .success(function(data, status, headers, config) {
+		    $http.get('https://raw2.github.com/javascript-awesome/angular-911/master/datasources/staff.json')
+		        .success(function(data) {
 		            workersData = data;
 		            $rootScope.$broadcast('workersData:updated');
 		            console.log(data);
 		        })
-		        .error(function(data, status, headers, config) {
+		        .error(function(data) {
 		            console.log(data);
 		        });
 		}
-
-		var service = {};
-		getWorkers();
-		service.getAll = function() {
-	        return workersData;
-	        console.log(data);
-	    }
+ console.log(workersData);
+		// var service = {};
+		// getWorkers();
+		// service.getAll = function() {
+	 //        return workersData;
+	 //        console.log(data);
+	 //    }
 	 
-	    return service;
+	 //    return service;
 
 	}]);
 
 	
 
-	mainModule.service('Serviceteams', ['$http', '$rootScope', 'teamsStorage', function($http, $rootScope, teamsStorage) {
-
+	mainModule.service('Serviceteams', ['$http', '$rootScope', 'teamsStorage', 'WorkersData', function($http, $rootScope, teamsStorage, WorkersData) {
+		
+		//var arrayWorkers = WorkersData.workersData;
 		var arrayTeams = teamsStorage.get_team();
 		var arrayWorkers = teamsStorage.get_worker();
 		var newTeam = {
@@ -43,7 +44,6 @@
 						workersInTeam: []
 				};
 		var activeTeam = arrayTeams.length;
-		console.log(activeTeam);
 		var workersInTag = [];
 		
         return {
@@ -69,15 +69,20 @@
            	},
             addTeamToTag:function(index){
             	workersInTag = angular.copy(arrayTeams[index].workersInTeam);
-            	console.log(workersInTag);
             },
             addWorker:function (newWorker) {
 				arrayWorkers.push(newWorker);	
 				teamsStorage.put_worker(arrayWorkers);
             },
-            removeWorker:function (index) {
-		   		arrayWorkers.splice(index, 1);		    
+            removeWorker:function (index, worker) {
+		   		arrayWorkers.splice(index, 1);	
+		   		for(var arrayTeamId in arrayTeams){
+					arrayTeams[arrayTeamId].workersInTeam.splice(arrayTeams[arrayTeamId].workersInTeam.indexOf(worker), 1);
+				}	 
+				workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);  
+				// console.log(workersInTag); 
 		    	teamsStorage.put_worker(arrayWorkers);
+		    	teamsStorage.put_team(arrayTeams);
             },
             addWorkerToTeam:function (worker) {
             	console.log(arrayTeams[activeTeam].workersInTeam);

@@ -22,7 +22,7 @@
       
         <div class="container">
             <section id="main">
-            <div class="row">
+            <div class="row" ng-controller="WorkersData">
 
               <section ng-controller="PanelController as panel">
                 <div class="tabbable col-md-8" ng-controller="AddWorkers">
@@ -49,7 +49,7 @@
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                               <li ng-repeat="worker in arrayWorkers | filter:searchWorker track by $index">
                                 <a href ng-click="addWorkerToTag(worker)">
-                                  {{worker.name}}<span ng-show="worker.jobTitle!=''">, {{worker.jobTitle}}</span><span ng-show="worker.grade!=''">, {{worker.grade}}</span>
+                                  {{worker.name}}<span ng-show="worker.job!=''">, {{worker.job}}</span><span ng-show="worker.grade!=''">, {{worker.grade}}</span>
                                 </a>
                               </li>
                             </ul>
@@ -72,7 +72,7 @@
                           </div>
 
                           <div class="col-md-3">
-                            <input type="text" name="jobTitleWorker" id="jobTitleWorker" class="form-control" placeholder="Job title" ngMinlength="1" ng-model="newWorker.jobTitle" />
+                            <input type="text" name="jobTitleWorker" id="jobTitleWorker" class="form-control" placeholder="Job title" ngMinlength="1" ng-model="newWorker.job" />
                           </div>
 
                           <div class="col-md-3">
@@ -102,7 +102,7 @@
                           <table id="tableWorkers" class="table table-bordered table-hover">
                             <tr class="collapseRow">
                               <th>Name</th>
-                              <th>Job title</th>
+                              <th>Job</th>
                               <th>Age</th>
                               <th>Grade</th>
                               <th>Delete</th>
@@ -111,11 +111,11 @@
                                   <td>
                                    <a ng-click="addWorkerToTeam(worker)" class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip">{{worker.name}}</a>
                                   </td>
-                                  <td>{{worker.jobTitle}}</td>
+                                  <td>{{worker.job}}</td>
                                   <td>{{worker.age}}</td>
                                   <td>{{worker.grade}}</td> 
                                   <td>
-                                     <button type="button" class="close" aria-hidden="true" ng-click="removeWorker($index)">&times;</button>
+                                     <button type="button" class="close" aria-hidden="true" ng-click="removeWorker($index, worker)">&times;</button>
                                   </td>
                             </tr> 
                             <tr ng-repeat-end class="collapseRow">

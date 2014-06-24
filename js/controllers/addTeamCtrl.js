@@ -4,6 +4,26 @@
 var mainModule = angular.module('teamsmvc');
 
 
+	mainModule.controller('WorkersData', ['$http', function($http) {
+	 
+		    $http.get('data.json')
+		        .success(function(data) {
+		           console.log("succes");
+		        })
+		        .error(function(data) {
+		            console.log("error");
+		        });
+		
+ // console.log(workersData);
+		
+
+	}]);
+
+
+
+
+
+
 	mainModule.controller('AddTeams', function Teams($scope, $routeParams, $filter, $rootScope, Serviceteams) {
 		'use strict';
 
@@ -57,13 +77,18 @@ var mainModule = angular.module('teamsmvc');
 		var arrayWorkers = $scope.arrayWorkers = Serviceteams.getWorker();
 		var newWorker =	$scope.newWorker = {
 				name: '',
-				jobTitle: '',
+				job: '',
 				age: '',
-				grade: '',
-				details: '',
-				reviews: ''
+				grade: ''
 		};
-
+// var newWorker =	$scope.newWorker = {
+// 				name: '',
+// 				job: '',
+// 				age: '',
+// 				grade: '',
+// 				details: '',
+// 				reviews: ''
+// 		};
 		
 	   	$scope.searchWorker = "";
 
@@ -73,16 +98,15 @@ var mainModule = angular.module('teamsmvc');
 		$scope.addWorker = function(){
 			Serviceteams.addWorker($scope.newWorker);
 		    $scope.newWorker = {
-				name: '',
-				jobTitle: '',
+		    	name: '',
+				job: '',
 				age: '',
-				grade: '',
-				datails: '',
-				reviews: ''
+				grade: ''
 			};
 	    };
-	  	$scope.removeWorker = function(index){
-	  		Serviceteams.removeWorker(index);
+	  	$scope.removeWorker = function(index, worker){
+	  		Serviceteams.removeWorker(index, worker);
+	  		$rootScope.workersInTag = Serviceteams.getWorkerInTag();
 	    };
 
 	    $scope.addWorkerToTeam = function(worker){
