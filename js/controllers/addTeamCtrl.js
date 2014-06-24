@@ -3,90 +3,59 @@
 
 var mainModule = angular.module('teamsmvc');
 
-var arrayTeams = [];
-var arrayWorkers = [];
-// var postData = "<RequestInfo> "
-//             + "<Event>GetPersons</Event> "         
-//         + "</RequestInfo>";
 
-//     var req = new XMLHttpRequest();
-
-//     req.onreadystatechange = function () {
-//         if (req.readyState == 4 || req.readyState == "complete") {
-//             if (req.status == 200) {
-//                 console.log(req.responseText);
-//             }
-//         }
-//     };
-
-//     try {
-//         req.open('POST', 'data.json', false);
-//         req.send(postData);
-//     }
-//     catch (e) {
-//         console.log(e);
-//     }
-
-
-// mainModule.controller('GetData', function GetData($scope, $http) {
-//     $http({
-//             url: 'data.json',
-//             method: "POST",
-//             data: postData,
-//             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-//         }).success(function (data, status, headers, config) {
-//                 $scope.postData = data; // assign  $scope.persons here as promise is resolved here 
-//             }).error(function (data, status, config) {
-//                 $scope.status = status;
-//             });
-	
-// });
-
-	mainModule.controller('AddTeams', function Teams($scope, $routeParams, $filter, teamsStorage, $rootScope) {
+	mainModule.controller('AddTeams', function Teams($scope, $routeParams, $filter, $rootScope, Serviceteams) {
 		'use strict';
 
-		arrayTeams = $scope.arrayTeams = teamsStorage.get_team();
-			$scope.newTeam = {
-				name: '',
-				workersInTeam: []
-			};
+		var arrayTeams = $scope.arrayTeams = Serviceteams.getTeam();
+		var newTeam = $scope.newTeam = {
+						name: '',
+						workersInTeam: []
+				};
+		$rootScope.refresh = false;
+	// localStorage.clear();
 
-	 // localStorage.clear();
-
+	  
 	  	$scope.addTeam = function(){
-			arrayTeams[arrayTeams.length] = $scope.newTeam;	
-			teamsStorage.put_team(arrayTeams);
-		    $scope.newTeam = {
-				name: '',
-				workersInTeam: []
-			};
-	    }
+	  		Serviceteams.addTeam($scope.newTeam);
+	  		
+				$scope.newTeam = {
+						name: '',
+						workersInTeam: []
+				};
+	    };
+
 	  	$scope.removeTeam = function(index){
-		    arrayTeams.splice(index, 1);
-		    teamsStorage.put_team(arrayTeams);
-	    }
+		    Serviceteams.removeTeam(index);
+		    
+	    };
 
 	    $scope.setActiveTeam= function(index){
-	    	$rootScope.activeTeam = index;//setActiveTeam
-	    	$rootScope.workersInTag = arrayTeams.workersInTeam;
 
-	    	console.log($rootScope.workersInTag);
+	    	$rootScope.refresh = false;
+	    	Serviceteams.setActiveTeam(index);
+	    	Serviceteams.addTeamToTag(index);
+
+			$rootScope.workersInTag = Serviceteams.getWorkerInTag();
 	    };
 
-	    $scope.removeWorkerFromTeam= function(index){
+	    $scope.removeWorkerFromTeam = function(index){
+	    	Serviceteams.removeWorkerFromTeam(index);
 
-	    	arrayTeams[$rootScope.activeTeam].workersInTeam.splice(index, 1);
-	    	teamsStorage.put_team(arrayTeams);
+			$rootScope.workersInTag = Serviceteams.getWorkerInTag();
 	    };
 
+	    
+		
+	  
 	});
 
 
-	mainModule.controller('AddWorkers', function Workers($scope, $routeParams, $filter, teamsStorage, $rootScope) {
+	mainModule.controller('AddWorkers', function Workers($scope, $routeParams, $filter, $rootScope, Serviceteams) {
 			'use strict';
 
-		arrayWorkers = $scope.arrayWorkers = teamsStorage.get_worker();
-			$scope.newWorker = {
+		var arrayWorkers = $scope.arrayWorkers = Serviceteams.getWorker();
+		var newWorker =	$scope.newWorker = {
 				name: '',
 				jobTitle: '',
 				age: '',
@@ -96,10 +65,13 @@ var arrayWorkers = [];
 		};
 
 		
+	   	$scope.searchWorker = "";
+
+		// var workersInTag = $scope.workersInTag = Serviceteams.getTeam();
+
 
 		$scope.addWorker = function(){
-			arrayWorkers[arrayWorkers.length] = $scope.newWorker;	
-			teamsStorage.put_worker(arrayWorkers);
+			Serviceteams.addWorker($scope.newWorker);
 		    $scope.newWorker = {
 				name: '',
 				jobTitle: '',
@@ -108,30 +80,36 @@ var arrayWorkers = [];
 				datails: '',
 				reviews: ''
 			};
-	    }
+	    };
 	  	$scope.removeWorker = function(index){
-		    arrayWorkers.splice(index, 1);		    
-		    teamsStorage.put_worker(arrayWorkers);
-	    }
-
-	    $scope.addWorkerToTeam = function(worker){
-	     	arrayTeams[$rootScope.activeTeam].workersInTeam.push(worker);
-	     	teamsStorage.put_team(arrayTeams);
+	  		Serviceteams.removeWorker(index);
 	    };
 
-
-	   	$scope.searchWorker = "";
-		$scope.workers = arrayWorkers;
-		
+	    $scope.addWorkerToTeam = function(worker){
+	    	Serviceteams.addWorkerToTeam(worker);
+	    };
 
 		$scope.addWorkerToTag = function(worker){
-	     	$rootScope.workersInTag.push(worker);
+			$rootScope.refresh = true;
+			Serviceteams.addWorkerToTag(worker);
+			$rootScope.workersInTag = Serviceteams.getWorkerInTag();
 	    };
 
 		$scope.removeWorkerFromTag = function(index){
-	     	$rootScope.workersInTag.splice(index,1);
+			$rootScope.refresh = true;
+	     	Serviceteams.removeWorkerFromTag(index);
+	    };
+
+		$scope.refreshTeam = function(){
+	    	Serviceteams.refreshTeam($rootScope.workersInTag);
 	    };
 	});
+
+
+
+
+
+
 
 	mainModule.controller('PanelController', function() {
 

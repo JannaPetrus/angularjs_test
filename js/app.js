@@ -5,4 +5,4 @@
  *
  * @type {angular.Module}
  */
-var mainModule = angular.module('teamsmvc', ['ngRoute', 'mgcrea.ngStrap.typeahead']);
+var mainModule = angular.module('teamsmvc', ['ngRoute']);

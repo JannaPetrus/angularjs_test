@@ -18,14 +18,14 @@
     <![endif]-->
     </head>
   
-    <body ng-app="teamsmvc" >
+    <body ng-app="teamsmvc">
       
-        <div class="container" ng-controller="AddWorkers">
+        <div class="container">
             <section id="main">
             <div class="row">
 
               <section ng-controller="PanelController as panel">
-                <div class="tabbable col-md-8">
+                <div class="tabbable col-md-8" ng-controller="AddWorkers">
 
                   <ul class="nav nav-pills">
                     <li ng-class="{ active: panel.isSelected(1)}">
@@ -37,12 +37,10 @@
                   </ul>
 
                     <div ng-show="panel.isSelected(1)">
-                     
-
-
                         <div class="tags">
                           <div class="workersTag bg-primary pull-left" ng-repeat="workerTag in workersInTag track by $index">                
-                            <a class="showDetails" tooltip data-original-title="{{arrayWorkers[workerTag].details}}" data-toggle="tooltip">{{workerTag.name}}</a>
+                            <a class="showDetails" tooltip data-original-title="{{workerTag.details}}" data-toggle="tooltip">
+                              {{workerTag.name}}</a>
                             <a class="removeWorkerFromTag" ng-click="removeWorkerFromTag($index)">x</a>
                           </div>
                           <div class="pull-left">
@@ -50,16 +48,20 @@
                             {{worker.name}}
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                               <li ng-repeat="worker in arrayWorkers | filter:searchWorker track by $index">
-                                  {{$index}}
                                 <a href ng-click="addWorkerToTag(worker)">
                                   {{worker.name}}<span ng-show="worker.jobTitle!=''">, {{worker.jobTitle}}</span><span ng-show="worker.grade!=''">, {{worker.grade}}</span>
                                 </a>
                               </li>
                             </ul>
                           </div>
+                          <div class="pull-right">
+                            <button ng-show="refresh" ng-click="refreshTeam()" type="button" class="btn btn-success">Refresh</button>
+                          </div>
+                            
                         </div>
                     </div>
-                    <div class="tab-pane"  ng-show="panel.isSelected(2)">
+                  
+                    <div class="tab-pane" ng-show="panel.isSelected(2)">
 
                       <form id="addNewWorker" role="form" class="row" name="addnewworker" ng-submit="addworker()">
                         
@@ -129,17 +131,24 @@
 
 
                     </div>
+                    
+                    
+
                 </div>
 
 
                 <div class="col-md-4" ng-controller="AddTeams">
 
-                <form id="addNewTeam" role="form" class="row" name="addnewteam" ng-submit="addTeam()">
+
+
+                <form name="addnewteam" id="addNewTeam" role="form" class="row" ng-submit="addTeam()" novalidate>
                     <div class="col-md-10">
-                      <input type="text" name="addTeam" id="addTeam" class="form-control" placeholder="Add new Team" ngMinlength="1" ng-model="newTeam.name" />
+                      <input type="text" name="nameTeam" id="addTeam" class="form-control" placeholder="Add new Team" ng-model="newTeam.name" required/>
+                      <span class="error" ng-show="addnewteam.nameTeam.$error.required">
+                       Required!</span><br>
                     </div>
                     <div class="col-md-2">
-                      <button type="button" class="btn btn-success" ng-click="addTeam()">+</button>
+                      <button type="button" ng-class"disabled:" class="btn btn-success" ng-click="addTeam()">+</button>
                     </div>
                 </form>
 
@@ -175,7 +184,7 @@
       <script src="js/angular-strap/angular-strap.tpl.min.js"></script>
       <script src="js/app.js"></script>
       <script src="js/controllers/addTeamCtrl.js"></script>
-      <script src="js/services/todoStorage.js"></script>
+      <script src="js/services/teams.js"></script>
       <script src="js/directives/toolpit.js"></script>
     </body>
 </html>
