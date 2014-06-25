@@ -32,7 +32,7 @@
 
 	}]);
 
-	
+	// 127.0.0.1
 
 	mainModule.service('Serviceteams', ['$http', '$rootScope', 'teamsStorage', 'WorkersData', function($http, $rootScope, teamsStorage, WorkersData) {
 		
