@@ -6,88 +6,75 @@
  var mainModule = angular.module('teamsmvc');
 
 
-	mainModule.factory('WorkersData', ['$http', '$rootScope', function($http, $rootScope) {
-	 
-	var workersData = [];
-		function getWorkers() {
-		    $http.get('https://raw2.github.com/javascript-awesome/angular-911/master/datasources/staff.json')
-		        .success(function(data) {
-		            workersData = data;
-		            $rootScope.$broadcast('workersData:updated');
-		            console.log(data);
-		        })
-		        .error(function(data) {
-		            console.log(data);
-		        });
-		}
- console.log(workersData);
-		// var service = {};
-		// getWorkers();
-		// service.getAll = function() {
-	 //        return workersData;
-	 //        console.log(data);
-	 //    }
-	 
-	 //    return service;
-
-	}]);
-
-	// 127.0.0.1
-
-	mainModule.service('Serviceteams', ['$http', '$rootScope', 'teamsStorage', 'WorkersData', function($http, $rootScope, teamsStorage, WorkersData) {
+	mainModule.service('WorkersData', function($http) {
+	 delete $http.defaults.headers.common['X-Requested-With'];
 		
-		//var arrayWorkers = WorkersData.workersData;
+		this.getData = function getData(){
+		    return $http.get('data.json');
+		}
+	});
+
+	mainModule.service('Serviceteams', ['$rootScope', 'teamsStorage', 'WorkersData', function($rootScope, teamsStorage, WorkersData) {
+		
+		var arrayWorkers;
+		    WorkersData.getData()
+		    .then(function(dataResponse) {
+		       arrayWorkers = dataResponse.data;
+		    });
 		var arrayTeams = teamsStorage.get_team();
-		var arrayWorkers = teamsStorage.get_worker();
 		var newTeam = {
 						name: '',
 						workersInTeam: []
 				};
-		var activeTeam = arrayTeams.length;
+		var activeTeam = arrayTeams.length-1;
 		var workersInTag = [];
-		
+		var notice = '';
+
         return {
         	getTeam:function () {
 				return arrayTeams;
             },
-        	getWorker:function () {
-				return arrayWorkers;
+            getActiveTeam:function () {
+				return activeTeam;			
             },
         	getWorkerInTag:function () {
+				return workersInTag;
+            },
+        	getDefaultWorkerInTag:function () {
+        		if(arrayTeams.length>0)
+        		workersInTag = angular.copy(arrayTeams[arrayTeams.length-1].workersInTeam);
 				return workersInTag;
             },
         	addTeam:function (newTeam) {
         		arrayTeams.push(newTeam);
         		teamsStorage.put_team(arrayTeams);
+            	console.log(activeTeam);
             },
             removeTeam:function (index) {
 	            arrayTeams.splice(index, 1);
-        		teamsStorage.put_team(arrayTeams);	
+        		teamsStorage.put_team(arrayTeams);
+        		workersInTag = [];
 			},
-            setActiveTeam:function (index) {
-            	activeTeam = index;
-           	},
             addTeamToTag:function(index){
-            	workersInTag = angular.copy(arrayTeams[index].workersInTeam);
-            },
-            addWorker:function (newWorker) {
-				arrayWorkers.push(newWorker);	
-				teamsStorage.put_worker(arrayWorkers);
-            },
-            removeWorker:function (index, worker) {
-		   		arrayWorkers.splice(index, 1);	
-		   		for(var arrayTeamId in arrayTeams){
-					arrayTeams[arrayTeamId].workersInTeam.splice(arrayTeams[arrayTeamId].workersInTeam.indexOf(worker), 1);
-				}	 
-				workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);  
-				// console.log(workersInTag); 
-		    	teamsStorage.put_worker(arrayWorkers);
-		    	teamsStorage.put_team(arrayTeams);
+            	activeTeam = index;
+            	workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);
             },
             addWorkerToTeam:function (worker) {
-            	console.log(arrayTeams[activeTeam].workersInTeam);
-	     		arrayTeams[activeTeam].workersInTeam.push(worker);
-	     		teamsStorage.put_team(arrayTeams);
+            	var flag = false;
+            	for(var i = 0; i < arrayTeams[activeTeam].workersInTeam.length; i++){
+            		if(arrayTeams[activeTeam].workersInTeam[i].id == worker.id){
+            			flag = true;
+						notice = 'This worker is already in this team!';
+            			break;
+            		}
+            	}
+            	if(!flag){
+            		arrayTeams[activeTeam].workersInTeam.push(worker);
+            		workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);
+	     			teamsStorage.put_team(arrayTeams);
+	     			notice = '';		
+	     		}
+	     		return notice;
             },
             removeWorkerFromTeam:function(index){
 				arrayTeams[activeTeam].workersInTeam.splice(index, 1);
@@ -95,7 +82,20 @@
 	    		teamsStorage.put_team(arrayTeams);
             },
             addWorkerToTag:function(worker){
-	     		workersInTag.push(angular.copy(worker));
+            	var flag = false;
+            	for(var i = 0; i < workersInTag.length; i++){
+            		if(workersInTag[i].id == worker.id){
+            			flag = true;
+            			notice = 'This worker is already in this team!';
+            			break;
+            		}
+            	}
+            	if(!flag){
+            		workersInTag.push(angular.copy(worker));
+            		notice = '';
+            		refresh = true;//need refresh of the team
+            	}
+            	return notice;
             },
             removeWorkerFromTag:function(index){
 	     		workersInTag.splice(index,1);
@@ -103,7 +103,6 @@
             refreshTeam:function(workersInTag){
 	     		arrayTeams[activeTeam].workersInTeam = angular.copy(workersInTag); 
         		teamsStorage.put_team(arrayTeams);
-            	console.log(arrayTeams);
             }
         };
     }]);
@@ -120,14 +119,12 @@
 			get_team: function () {
 				return JSON.parse(localStorage.getItem(TEAMS_STORAGE_ID) || '[]');
 			},
-
 			put_team: function (teams) {
 				localStorage.setItem(TEAMS_STORAGE_ID, JSON.stringify(teams));
 			},
 			get_worker: function () {
 				return JSON.parse(localStorage.getItem(WORKERS_STORAGE_ID) || '[]');
 			},
-
 			put_worker: function (workers) {
 				localStorage.setItem(WORKERS_STORAGE_ID, JSON.stringify(workers));
 			}

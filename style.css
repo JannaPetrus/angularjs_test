@@ -2,6 +2,12 @@ html {
   background: #fff;
   margin: 0;
 }
+.clear {
+  clear: both;
+}
+.danger {
+  color: #f00;
+}
 .container {
   margin-top: 30px;
 }
@@ -61,17 +67,19 @@ a.showDetails {
   cursor: pointer;
 }
 .tags {
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .dropdown-menu {
   position: relative !important;
+  max-height: 300px;
+  overflow: auto;
 }
 .workersTag {
   width: auto;
   height: auto;
   border-radius: 4px;
   padding: 3px 5px;
-  margin-right: 5px;
+  margin: 10px 5px 5px 0;
 }
 .workersTag a {
   cursor: pointer;
@@ -82,4 +90,16 @@ a.showDetails {
 }
 .workersTag a.removeWorkerFromTag:hover {
   text-decoration: none;
+}
+/*validation of adding new team*/
+#addNewTeam input.ng-invalid:focus {
+  border-color: #f00;
+  box-shadow: 0 0 4px #f00;
+}
+#addNewTeam input.ng-valid:focus {
+  border-color: #008000;
+  box-shadow: 0 0 4px #008000;
+}
+#addNewTeam .invalid {
+  display: none;
 }

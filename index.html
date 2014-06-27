@@ -22,7 +22,7 @@
       
         <div class="container">
             <section id="main">
-            <div class="row" ng-controller="WorkersData">
+            <div class="row">
 
               <section ng-controller="PanelController as panel">
                 <div class="tabbable col-md-8" ng-controller="AddWorkers">
@@ -37,92 +37,68 @@
                   </ul>
 
                     <div ng-show="panel.isSelected(1)">
-                        <div class="tags">
-                          <div class="workersTag bg-primary pull-left" ng-repeat="workerTag in workersInTag track by $index">                
-                            <a class="showDetails" tooltip data-original-title="{{workerTag.details}}" data-toggle="tooltip">
-                              {{workerTag.name}}</a>
-                            <a class="removeWorkerFromTag" ng-click="removeWorkerFromTag($index)">x</a>
+                        <div class="tags row">
+                          <div class="col-md-10">
+
+                       <p class="danger">{{notice}}</p>
+                            <div class="workersTag bg-primary pull-left" ng-repeat="workerTag in workersInTag track by $index">                
+                              <a class="showDetails" tooltip data-original-title="{{workerTag.details}}" data-toggle="tooltip">
+                                {{workerTag.name}}</a>
+                              <a class="removeWorkerFromTag" ng-click="removeWorkerFromTag($index)">x</a>
+                            </div>
+
+                            <div>
+                              <div class="clear"></div>
+                              <div class="pull-left">
+                              <input type="text" data-toggle="dropdown" ng-model="searchWorker" ng-options="worker for worker in workers" placeholder="Start typing">
+                              {{worker.name}}
+                              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                <li ng-repeat="worker in arrayWorkers | filter:searchWorker track by $index">
+                                  <a href ng-click="addWorkerToTag(worker)">
+                                    {{worker.name}}<span ng-show="worker.job!=''">, {{worker.job}}</span><span ng-show="worker.grade!=''">, {{worker.grade}}</span>
+                                  </a>
+                                </li>
+                              </ul>
+                              </div>
+                            </div>
+
                           </div>
-                          <div class="pull-left">
-                            <input type="text" data-toggle="dropdown" ng-model="searchWorker" ng-options="worker for worker in workers" placeholder="Start typing">
-                            {{worker.name}}
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                              <li ng-repeat="worker in arrayWorkers | filter:searchWorker track by $index">
-                                <a href ng-click="addWorkerToTag(worker)">
-                                  {{worker.name}}<span ng-show="worker.job!=''">, {{worker.job}}</span><span ng-show="worker.grade!=''">, {{worker.grade}}</span>
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="pull-right">
+                          <div class="col-md-2">
                             <button ng-show="refresh" ng-click="refreshTeam()" type="button" class="btn btn-success">Refresh</button>
                           </div>
                             
+                        
                         </div>
                     </div>
                   
                     <div class="tab-pane" ng-show="panel.isSelected(2)">
-
-                      <form id="addNewWorker" role="form" class="row" name="addnewworker" ng-submit="addworker()">
-                        
-                        <h4 class="addWorkerTitle">Add new worker:</h4>
-                        <div class="row col-md-11">
-                          <div class="col-md-3">
-                            <input type="text" name="nameWorker" id="nameWorker" class="form-control" placeholder="Name" ngMinlength="1" ng-model="newWorker.name" />
-                          </div>
-
-                          <div class="col-md-3">
-                            <input type="text" name="jobTitleWorker" id="jobTitleWorker" class="form-control" placeholder="Job title" ngMinlength="1" ng-model="newWorker.job" />
-                          </div>
-
-                          <div class="col-md-3">
-                            <input type="text" name="ageWorker" id="ageWorker" class="form-control" placeholder="Age" ngMinlength="1" ng-model="newWorker.age" />
-                          </div>
-
-                          <div class="col-md-3">
-                            <input type="text" name="gradeWorker" id="gradeWorker" class="form-control" placeholder="Grade" ngMinlength="1" ng-model="newWorker.grade" />
-                          </div>
-                        </div>
-
-                        <div class="col-md-1">
-                          <button type="button" class="btn btn-success" ng-click="addWorker()">Add</button>
-                        </div>
-                        <div class="row col-md-11 details_reviews">
-                          <div class="col-md-6">
-                            <textarea type="text" name="detailsWorker" id="detailsWorker" class="form-control" placeholder="Details" ngMinlength="1" ng-model="newWorker.details"></textarea>
-                          </div>
-                          <div class="col-md-6">
-                            <textarea type="text" name="gradeWorker" id="reviewWorker" class="form-control" placeholder="Reviews" ngMinlength="1" ng-model="newWorker.reviews"></textarea>
-                          </div>
-                        </div>
-
-                      </form>
-
-   
+                      <h3>Workers</h3>
+                      <p class="danger">{{noticeAddWorkerToTeam}}</p>
                           <table id="tableWorkers" class="table table-bordered table-hover">
                             <tr class="collapseRow">
                               <th>Name</th>
                               <th>Job</th>
                               <th>Age</th>
                               <th>Grade</th>
-                              <th>Delete</th>
+                              <!-- <th>Delete</th> -->
                             </tr>
                             <tr ng-repeat-start="worker in arrayWorkers track by $index" data-toggle="collapse" index="$index" data-parent="#worker_accordion" href="#{{'worker_collapse'+$index+1}}">
+                              
                                   <td>
-                                   <a ng-click="addWorkerToTeam(worker)" class="showDetails" tooltip data-original-title="{{worker.details}}" data-toggle="tooltip">{{worker.name}}</a>
+                                   <a ng-click="addWorkerToTeam(worker)" class="showDetails" tooltip data-original-title="{{datails}}" data-toggle="tooltip">{{worker.name}}</a>
                                   </td>
                                   <td>{{worker.job}}</td>
                                   <td>{{worker.age}}</td>
                                   <td>{{worker.grade}}</td> 
-                                  <td>
+                                 <!--  <td>
                                      <button type="button" class="close" aria-hidden="true" ng-click="removeWorker($index, worker)">&times;</button>
-                                  </td>
+                                  </td> -->
                             </tr> 
                             <tr ng-repeat-end class="collapseRow">
                                 <td colspan="5">
                                       <div id="{{'worker_collapse'+$index+1}}" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                          {{worker.reviews}}
+                                          {{reviews}}
                                         </div>
                                       </div>
                                 </td>
@@ -138,38 +114,33 @@
 
 
                 <div class="col-md-4" ng-controller="AddTeams">
-
-
-
-                <form name="addnewteam" id="addNewTeam" role="form" class="row" ng-submit="addTeam()" novalidate>
-                    <div class="col-md-10">
-                      <input type="text" name="nameTeam" id="addTeam" class="form-control" placeholder="Add new Team" ng-model="newTeam.name" required/>
-                      <span class="error" ng-show="addnewteam.nameTeam.$error.required">
-                       Required!</span><br>
+                <form name="Team" id="addNewTeam" role="form" class="row" submit="addTeam()" novalidate>
+                    <div class="col-md-9">
+                          <input type="text" id="addTeam" class="immediate-help form-control" placeholder="Add new Team" ng-model="newTeam.name" ng-pattern="/^[a-zA-Z0-9]+$/" required/>
                     </div>
-                    <div class="col-md-2">
-                      <button type="button" ng-class"disabled:" class="btn btn-success" ng-click="addTeam()">+</button>
+                    <div class="col-md-3">
+                      <button type="submit" class="btn btn-success" ng-click="addTeam()" ng-class="{invalid:!Team.$valid}">Add</button>
+                      <button class="btn" ng-class="{invalid:Team.$valid}">Add</button>
                     </div>
                 </form>
 
-                    <div class="panel-group" id="team_accordion">
+                    <div class="panel-group" id="team_accordion" collapse>
                       <div class="panel panel-default" ng-repeat="teamName in arrayTeams track by $index">
                         <div class="panel-heading">
                           <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#team_accordion" href="#{{'team_collapse'+$index+1}}" ng-click="setActiveTeam($index)">
+                            <a data-toggle="collapse" data-parent="#team_accordion" href="#{{'team_collapse'+$index+1}}" ng-click="addTeamToTag($index)">
                               {{teamName.name}}
                             </a>
                             <button type="button" class="close pull-right" aria-hidden="true" ng-click="removeTeam($index)">&times;</button>
                           </h4>
                         </div>
-                        <div id="{{'team_collapse'+$index+1}}" ng-class='{in:$last}' class="panel-collapse collapse">
+                        <div id="{{'team_collapse'+$index+1}}" ng-class='{in:setTimeout($index == activeTeam,1000)}' class="panel-collapse collapse">
                           <div class="panel-body">
                             <div ng-repeat="workerInTeam in teamName.workersInTeam track by $index">
                               <span class="panel-title"> 
                                 <a class="showDetails" tooltip data-original-title="{{workerInTeam.details}}" data-toggle="tooltip">{{workerInTeam.name}}</a>
                               </span>  
-                              <button type="button" class="close" aria-hidden="true" ng-click="removeWorkerFromTeam($index)">&times;</button>    
-                                                    
+                              <button type="button" class="close" aria-hidden="true" ng-click="removeWorkerFromTeam($index)">&times;</button>               
                             </div>
                           </div>
                         </div>
@@ -184,5 +155,6 @@
       <script src="js/controllers/addTeamCtrl.js"></script>
       <script src="js/services/teams.js"></script>
       <script src="js/directives/toolpit.js"></script>
+      <script src="js/directives/validationTeam.js"></script>
     </body>
 </html>

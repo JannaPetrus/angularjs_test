@@ -10,7 +10,17 @@ main_module.directive('tooltip', function () {
 
 		return function () {
 			$("a.showDetails").tooltip();
-
 		}
 	});
 
+main_module.directive('collapse', function () {
+		'use strict';
+
+		return function () {
+			// $( document ).ready(function() {
+				
+			// });
+			//$('.panel-group').collapse('hide');
+			//$('.panel-collapse').last().collapse('show');
+		}
+	});
