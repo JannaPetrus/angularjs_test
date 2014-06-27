@@ -1,8 +1,4 @@
-/*global angular */
 
-/**
- * Services that persists and retrieves TODOs from localStorage
- */
  var mainModule = angular.module('teamsmvc');
 
 
@@ -26,7 +22,7 @@
 						name: '',
 						workersInTeam: []
 				};
-		var activeTeam = arrayTeams.length-1;
+		var activeTeam = null;
 		var workersInTag = [];
 		var notice = '';
 
@@ -38,11 +34,6 @@
 				return activeTeam;			
             },
         	getWorkerInTag:function () {
-				return workersInTag;
-            },
-        	getDefaultWorkerInTag:function () {
-        		if(arrayTeams.length>0)
-        		workersInTag = angular.copy(arrayTeams[arrayTeams.length-1].workersInTeam);
 				return workersInTag;
             },
         	addTeam:function (newTeam) {
@@ -61,19 +52,21 @@
             },
             addWorkerToTeam:function (worker) {
             	var flag = false;
-            	for(var i = 0; i < arrayTeams[activeTeam].workersInTeam.length; i++){
-            		if(arrayTeams[activeTeam].workersInTeam[i].id == worker.id){
-            			flag = true;
-						notice = 'This worker is already in this team!';
-            			break;
-            		}
-            	}
-            	if(!flag){
-            		arrayTeams[activeTeam].workersInTeam.push(worker);
-            		workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);
-	     			teamsStorage.put_team(arrayTeams);
-	     			notice = '';		
-	     		}
+            	if(activeTeam!=null){
+	            	for(var i = 0; i < arrayTeams[activeTeam].workersInTeam.length; i++){
+	            		if(arrayTeams[activeTeam].workersInTeam[i].id == worker.id){
+	            			flag = true;
+							notice = 'This worker is already in this team!';
+	            			break;
+	            		}
+	            	}
+	            	if(!flag){
+	            		arrayTeams[activeTeam].workersInTeam.push(worker);
+	            		workersInTag = angular.copy(arrayTeams[activeTeam].workersInTeam);
+		     			teamsStorage.put_team(arrayTeams);
+		     			notice = '';		
+		     		}
+	     		}else notice = 'Choose Team';
 	     		return notice;
             },
             removeWorkerFromTeam:function(index){
@@ -83,19 +76,22 @@
             },
             addWorkerToTag:function(worker){
             	var flag = false;
-            	for(var i = 0; i < workersInTag.length; i++){
-            		if(workersInTag[i].id == worker.id){
-            			flag = true;
-            			notice = 'This worker is already in this team!';
-            			break;
-            		}
-            	}
-            	if(!flag){
-            		workersInTag.push(angular.copy(worker));
-            		notice = '';
-            		refresh = true;//need refresh of the team
-            	}
-            	return notice;
+            	if(activeTeam!=null){
+	            	for(var i = 0; i < workersInTag.length; i++){
+	            		if(workersInTag[i].id == worker.id){
+	            			flag = true;
+	            			notice = 'This worker is already in this team!';
+	            			break;
+	            		}
+	            	}
+	            	if(!flag){
+	            		workersInTag.push(angular.copy(worker));
+	            		notice = '';
+	            		refresh = true;//need refresh of the team
+	            	}
+	            }else notice = 'Choose Team';
+	            console.log(workersInTag);
+	     		return notice;
             },
             removeWorkerFromTag:function(index){
 	     		workersInTag.splice(index,1);
@@ -112,8 +108,6 @@
 		'use strict';
 
 		var TEAMS_STORAGE_ID = 'teams-angularjs';
-		var WORKERS_STORAGE_ID = 'workers-angularjs';
-
 
 		return {
 			get_team: function () {
@@ -121,12 +115,6 @@
 			},
 			put_team: function (teams) {
 				localStorage.setItem(TEAMS_STORAGE_ID, JSON.stringify(teams));
-			},
-			get_worker: function () {
-				return JSON.parse(localStorage.getItem(WORKERS_STORAGE_ID) || '[]');
-			},
-			put_worker: function (workers) {
-				localStorage.setItem(WORKERS_STORAGE_ID, JSON.stringify(workers));
 			}
 		};
 	});

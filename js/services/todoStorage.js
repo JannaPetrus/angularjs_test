@@ -10,7 +10,6 @@ angular.module('teamsmvc')
 		var TEAMS_STORAGE_ID = 'teams-angularjs';
 		var WORKERS_STORAGE_ID = 'workers-angularjs';
 
-
 		return {
 			get_team: function () {
 				return JSON.parse(localStorage.getItem(TEAMS_STORAGE_ID) || '[]');
